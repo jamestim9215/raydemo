@@ -268,6 +268,9 @@
 
                     $("#cash").text(getSorce());
 
+                },
+                scratchDown: function(){
+                    $(".spanBox").fadeIn(50);
                 }
             });
 
@@ -275,7 +278,9 @@
                 var list = i + 1;
                 $(".code").last().append('<div class="spanBox"><i style="font-size:0.8rem;">' + list + '</i><span>' + rand012() + '</span><span>' + rand012() + '</span><span>' + rand012() + '</span></div>');
             }
-            $(".spanBox").fadeIn(500);
+
+
+            
             $(".spanBox").each(function (e) {
 
                 $(this).find("span").each(function (i) {
