@@ -201,28 +201,17 @@
                 return table[Math.floor(Math.random() * table.length)];
             }
         }
+        
         var rand012 = weightedRand({
             100: 35,
             500: 25,
             1000: 20,
-            66000: 15,
+            50000: 15,
             1000000: 10
         });
         // console.log(rand012());
         function check() {
             var total = 0;
-            // $(".spanBox").each(function (e) {
-            //     var num = 0;
-            //     var span = ["0", "0", "0"];
-            //     $(this).find("span").each(function (i) {
-            //         span[i] = parseInt($(this).text());
-            //     });
-            //     if (span[0] == span[1] && span[1] == span[2]) {
-            //         total = total + span[0];
-            //         $(this).last().append('<div class="bingo"></div>');
-            //     }
-            // });
-
             for (var i = 0; i < 5; i++) {
                 var num = 0;
                 if (sorcelist[i][0] == sorcelist[i][1] && sorcelist[i][1] == sorcelist[i][2]) {
@@ -231,15 +220,10 @@
                 }
             }
 
-
             if (total == 0) {
-                // console.log("哭哭沒中");
                 $("#mes").text("哭哭沒中");
-                // removeGame();
             } else {
-                // console.log("中了!!!" + total);
                 $("#mes").text("恭賀老爺!恭喜夫人!!您中了" + total);
-                // removeGame();
                 setSorce(total);
             }
         }
@@ -252,12 +236,10 @@
                 '</div>'
             );
 
-
             $('#promo').wScratchPad({
                 size: 30,
                 bg: './images/bg.png',
                 realtime: true,
-                // fg: 'https://www.toptal.com/designers/subtlepatterns/patterns/grey_wash_wall.png',
                 fg: './images/cover/' + num + '.jpg',
                 'cursor': 'url("images/coin.png") 5 5, default',
                 scratchMove: function (e, percent) {
@@ -278,8 +260,6 @@
                 var list = i + 1;
                 $(".code").last().append('<div class="spanBox"><i style="font-size:0.8rem;">' + list + '</i><span>' + rand012() + '</span><span>' + rand012() + '</span><span>' + rand012() + '</span></div>');
             }
-
-
             
             $(".spanBox").each(function (e) {
 
@@ -292,7 +272,6 @@
         $(".reStartGame").on('click', function () {
             reStartGame();
         });
-        // setGame();
     </script>
 </body>
 
