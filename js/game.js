@@ -5,6 +5,8 @@ var _game3 = false;
 var _game3sorce = 200;
 
 var sorcelist = [["0", "0", "0"], ["0", "0", "0"], ["0", "0", "0"], ["0", "0", "0"], ["0", "0", "0"]];
+var sorcelist2 = ["○", "□", "△", "◎", "∞", "7"];
+var game2list = [[], [], []];
 $("#cash").text(GameSorce);
 
 function getSorce() {
@@ -15,7 +17,7 @@ function setSorce(num) {
     GameSorce = GameSorce + num;
 }
 
-var rand012 = weightedRand({
+var rand01 = weightedRand({
     100: 35,
     200: 30,
     500: 15,
@@ -25,7 +27,6 @@ var rand012 = weightedRand({
 });
 
 function changeGame(lastType, newType) {
-    console.log(lastType + " / " + newType);
     $(".game-" + lastType).fadeOut(500, function () {
         $(".game-" + newType).fadeIn(500);
     });
@@ -64,14 +65,17 @@ function weightedRand(spec) {
     }
 }
 
-var rand012 = weightedRand({
-    100: 35,
-    200: 30,
-    500: 15,
-    1000: 10,
-    100000: 6,
-    1000000: 4
+var rand02 = weightedRand({
+    "○": 35,
+    "□": 30,
+    "△": 15,
+    "◎": 10,
+    "★": 6,
+    "7": 4
 });
+
+
+
 
 
 function check() {
@@ -91,6 +95,7 @@ function check() {
     }
 }
 
+//GAME 3 
 function setGame3() {
     var num = Math.floor((Math.random() * 10) + 1);
     _game3 = true;
@@ -182,7 +187,7 @@ $(".btn-next").on('click', function () {
 });
 
 $(".btn-restart").on('click', function () {
-    _game3sorce = _game3sorce /2 ;
+    _game3sorce = _game3sorce / 2;
     setSorce(_game3sorce);
     if (_game3sorce > 0) {
         $("#mes").text('你贏了' + _game3sorce);
@@ -224,7 +229,7 @@ function setGame() {
 
     for (var i = 0; i < 5; i++) {
         var list = i + 1;
-        $(".code").last().append('<div class="spanBox"><i style="font-size:0.8rem;">' + list + '</i><span>' + rand012() + '</span><span>' + rand012() + '</span><span>' + rand012() + '</span></div>');
+        $(".code").last().append('<div class="spanBox"><i style="font-size:0.8rem;">' + list + '</i><span>' + rand01() + '</span><span>' + rand01() + '</span><span>' + rand01() + '</span></div>');
     }
 
     $(".spanBox").each(function (e) {
@@ -242,7 +247,7 @@ $("#game-select").on('change', function () {
     var value = $(this).val();
     switch (value) {
         case "1": changeGame(GameType, value); GameType = value; break;
-        case "2": alert("尚未開放!!"); break;
+        case "2": changeGame(GameType, value); GameType = value; break;
         case "3": changeGame(GameType, value); GameType = value; break;
         default: alert("尚未開放!!"); break;
     }
@@ -256,3 +261,94 @@ function initial() {
 }
 
 initial();
+
+
+// game2
+
+$(".game2btn").on('click', function () {
+    $(".game2btn").addClass("game2btn-active");
+    $(".game2btn2").addClass("game2btn2-active");
+    $(".pushBtn").removeClass("btn-secondary");
+    $(".pushBtn").addClass("btn-info");
+    $(".pushBtn").attr("disabled", false);
+    game2list = [[], [], []];
+    $(".num1 ul").children().remove();
+    $(".num2 ul").children().remove();
+    $(".num3 ul").children().remove();
+    game2init();
+    setTimeout(function () {
+        $(".game2btn").removeClass("game2btn-active");
+        $(".game2btn2").removeClass("game2btn2-active");
+    }, 800);
+});
+
+$(".pushBtn").on('click', function () {
+    $(this).removeClass("btn-info");
+    $(this).addClass("btn-secondary");
+    $(this).attr("disabled", true);
+});
+
+var _index = [0, 0, 0];
+var gameTimeOut1;
+var gameTimeOut2;
+var gameTimeOut3;
+
+function read_index(index) {
+    // var v = index - 1;
+    return _index[index];
+}
+
+function seticon(index) {
+    var v = index + 1;
+    $(".num" + v + " ul").children().remove();
+    if (read_index(index) <= 7) {
+        $(".num" + v + " ul").last().append('<li>' + game2list[index][read_index(index)] + '</li><li>' + game2list[index][read_index(index)+1] + '</li><li>' + game2list[index][read_index(index)+2] + '</li>');
+    }else if (read_index(index) == 8) {
+        $(".num" + v + " ul").last().append('<li>' + game2list[index][read_index(index)] + '</li><li>' + game2list[index][read_index(index)+1] + '</li><li>' + game2list[index][read_index(index)-8] + '</li>');
+    }else if (read_index(index) == 9) {
+        $(".num" + v + " ul").last().append('<li>' + game2list[index][read_index(index)] + '</li><li>' + game2list[index][read_index(index)-8] + '</li><li>' + game2list[index][read_index(index)-7] + '</li>');
+    }
+    $(".num" + v + " ul").animate({ top: '100%' });
+    if (_index[index] < 9) {
+        _index[index]++;
+    } else {
+        _index[index] = 0;
+    }
+    stopGame2(v);
+    startGame2(v);
+}
+
+function startGame2(index) {
+    if (index == 1) gameTimeOut1 = setTimeout(function () {
+        seticon(0);
+    }, 1000);
+    if (index == 2) gameTimeOut2 = setTimeout(function () {
+        seticon(1);
+    }, 1000);
+    if (index == 3) gameTimeOut3 = setTimeout(function () {
+        seticon(2);
+    }, 1000);
+}
+
+function stopGame2(index) {
+    if (index == 1) clearTimeout(gameTimeOut1);
+    if (index == 2) clearTimeout(gameTimeOut2);
+    if (index == 3) clearTimeout(gameTimeOut3);
+}
+
+
+
+function game2init() {
+    for (var i = 0; i < 3; i++) {
+        for (var j = 0; j < 10; j++) {
+            game2list[i][j] = rand02();
+            // $(".num"+(i+1)+" ul").last().append('<li>'+game2list[i][j]+'</li>');
+        }
+    }
+    startGame2(1);
+    console.log(game2list);
+
+
+    // $(".num1 ul").last().append(v);
+
+}
